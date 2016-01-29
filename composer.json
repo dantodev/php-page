@@ -1,5 +1,6 @@
 {
   "name": "dtkahl/page-response",
+  "license": "MIT",
   "autoload": {
     "psr-4": {
       "Dtkahl\\PageResponse\\": "src/"
