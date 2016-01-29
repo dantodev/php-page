@@ -1,8 +1,8 @@
 {
-    "name": "Dtkahl/page-response",
-    "autoload": {
-        "psr-4": {
-            "Dtkahl\\PageResponse\\": "src/"
-        }
+  "name": "Dtkahl/page-response",
+  "autoload": {
+    "psr-4": {
+      "Dtkahl\\PageResponse\\": "src/"
     }
+  }
 }
