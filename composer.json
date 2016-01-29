@@ -1,5 +1,5 @@
 {
-  "name": "Dtkahl/page-response",
+  "name": "dtkahl/page-response",
   "autoload": {
     "psr-4": {
       "Dtkahl\\PageResponse\\": "src/"
