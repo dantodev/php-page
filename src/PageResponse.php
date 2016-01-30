@@ -1,4 +1,4 @@
-<?php
+<?php namespace Dtkahl\PageResponse;
 
 class PageResponse {
 
@@ -10,21 +10,43 @@ class PageResponse {
 	private $_render_data = [];
 	private $_sections = [];
 	
+	public function render()
+	{
+		return "test";
+	}
+
+  /**
+   * @param string $master_view
+   * @return $this
+   */
 	public function setMasterView($master_view)
 	{
 		$this->_master_view = $master_view;
+    return $this;
 	}
-	
+
+  /**
+   * @return string
+   */
 	public function getMasterView()
 	{
 		return $this->_master_view;
 	}
-	
-	public function meta(...$params)
+
+  /**
+   * @param $type
+   * @param $value
+   * @return $this
+   */
+	public function meta($type, $value)
 	{
-		$this->_meta = array_merge($this->_meta, arrnize(...$params));
+		$this->_meta = array_merge($this->_meta, arrnize($type, $value));
+		return $this;
 	}
-	
+
+  /**
+   * @return string
+   */
 	public function renderMeta()
 	{
 		$html = [];
@@ -100,17 +122,30 @@ class PageResponse {
 		}
 		return implode("\n", $html);
 	}
-	
+
+  /**
+   * @param $data
+   * @return $this
+   */
 	public function addJavascript($data)
 	{
 		array_merge($this->_javascripts, arrnize($data));
+		return $this;
 	}
-	
+
+  /**
+   * @param $data
+   * @return $this
+   */
 	public function addStylesheets($data)
 	{
 		array_merge($this->_stylesheets, arrnize($data));
+		return $this;
 	}
-	
+
+  /**
+   * @return string
+   */
 	public function renderJavascripts()
 	{
 		$html = "";
@@ -119,7 +154,10 @@ class PageResponse {
 		}
 		return $html;
 	}
-	
+
+  /**
+   * @return string
+   */
 	public function renderStylesheets()
 	{
 		$html = "";
@@ -141,7 +179,8 @@ class PageResponse {
 	
 	public function section(...$params)
 	{
-		$this->_render_data = array_merge($this->_render_data, arrnize(...$params));
+		$this->_sections = array_merge($this->_sections, arrnize(...$params));
+		return $this;
 	}
 	
 	public function getSections()
