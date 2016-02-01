@@ -1,7 +1,11 @@
 <?php namespace Dtkahl\PageResponse;
 
-class PageResponse {
+use Slim\Http\Headers;
+use Slim\Http\Response;
 
+class PageResponse extends Response {
+
+	private $_driver;
 	private $_master_view;
 	private $_meta = [];
 	private $_title_pattern = "%s";
@@ -9,10 +13,18 @@ class PageResponse {
 	private $_stylesheets = [];
 	private $_render_data = [];
 	private $_sections = [];
-	
+
+	public function __construct(Callable $driver)
+	{
+		$this->_driver = $driver; // TODO resolveDriver + ability to add Driver
+    $headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
+    parent::__construct(200, $headers);
+
+	}
+
 	public function render()
 	{
-		return "test";
+		return call_user_func($this->_driver, $this);
 	}
 
   /**
