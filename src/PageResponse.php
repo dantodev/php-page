@@ -9,7 +9,7 @@ use Slim\Http\Response;
  * Class PageResponse
  * @package Dtkahl\PageResponse
  * @property \Slim\App $_app
- * @property \Slim\Views\PhpRenderer $_view
+ * @property \Dtkahl\SimplePhpView\ViewRenderer$_view
  */
 class PageResponse extends Response {
 
@@ -36,7 +36,8 @@ class PageResponse extends Response {
 
 	public function render()
 	{
-		return $this->_view->render($this, $this->getMasterView(), $this->getRenderData());
+		$this->getBody()->write($this->_view->render($this->getMasterView(), $this->getRenderData()));
+		return $this;
 	}
 
   /**
@@ -59,7 +60,7 @@ class PageResponse extends Response {
 
 	public function view($file, $data = [])
 	{
-    return $this->_view->render($this, $file, $data)->getBody(); // TODO mist
+    return $this->_view->render( $file, $data);
 	}
 
   /**
