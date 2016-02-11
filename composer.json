@@ -1,6 +1,11 @@
 {
   "name": "dtkahl/page-response",
   "license": "MIT",
+  "require": {
+    "slim/slim": "^3.1",
+    "slim/php-view": "^2.0",
+    "dtkahl/useful-php-helper": "*"
+  },
   "autoload": {
     "psr-4": {
       "Dtkahl\\PageResponse\\": "src/"

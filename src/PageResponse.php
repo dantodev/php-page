@@ -1,11 +1,20 @@
 <?php namespace Dtkahl\PageResponse;
 
+use Slim\App;
 use Slim\Http\Headers;
 use Slim\Http\Response;
 
+
+/**
+ * Class PageResponse
+ * @package Dtkahl\PageResponse
+ * @property \Slim\App $_app
+ * @property \Slim\Views\PhpRenderer $_view
+ */
 class PageResponse extends Response {
 
-	private $_driver;
+	private $_app;
+	private $_view;
 	private $_master_view;
 	private $_meta = [];
 	private $_title_pattern = "%s";
@@ -14,17 +23,20 @@ class PageResponse extends Response {
 	private $_render_data = [];
 	private $_sections = [];
 
-	public function __construct(Callable $driver)
+	public function __construct(App $app)
 	{
-		$this->_driver = $driver; // TODO resolveDriver + ability to add Driver
-    $headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
-    parent::__construct(200, $headers);
+		$this->_app 			= $app;
+		$container  			= $this->_app->getContainer();
 
+		$this->_view 			= $container->get('view');
+
+		$headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
+		parent::__construct(200, $headers);
 	}
 
 	public function render()
 	{
-		return call_user_func($this->_driver, $this);
+		return $this->_view->render($this, $this->getMasterView(), $this->getRenderData());
 	}
 
   /**
@@ -43,6 +55,11 @@ class PageResponse extends Response {
 	public function getMasterView()
 	{
 		return $this->_master_view;
+	}
+
+	public function view($file, $data = [])
+	{
+    return $this->_view->render($this, $file, $data)->getBody(); // TODO mist
 	}
 
   /**
@@ -179,25 +196,27 @@ class PageResponse extends Response {
 		return $html;
 	}
 	
-	public function renderData(...$params)
+	public function renderData()
 	{
-		$this->_render_data = array_merge($this->_render_data, arrnize(...$params));
+    $params = func_get_args(); // PHP7 will make that better ...
+		$this->_render_data = array_merge($this->_render_data, call_user_func_array('arrnize', $params)); // this will also be better with PHP7 ...
 	}
-	
+
 	public function getRenderData()
 	{
-		return $this->_render_data;
+		return array_merge($this->_render_data, ['response' => $this]);
 	}
 	
-	public function section(...$params)
+	public function section()
 	{
-		$this->_sections = array_merge($this->_sections, arrnize(...$params));
+    $params = func_get_args(); // PHP7 will make that better ...
+		$this->_sections = array_merge($this->_sections, call_user_func_array('arrnize', $params)); // this will also be better with PHP7 ...
 		return $this;
 	}
 	
-	public function getSections()
+	public function renderSection($name)
 	{
-		return $this->_sections;
+		return array_key_exists($name, $this->_sections) ? $this->_sections[$name] : '';
 	}
 
 }
