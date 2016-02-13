@@ -3,8 +3,8 @@
   "license": "MIT",
   "require": {
     "slim/slim": "^3.1",
-    "dtkahl/simple-php-view": "^1.0",
-    "dtkahl/useful-php-helper": "^1.0"
+    "dtkahl/php-simple-view": "^1.1",
+    "dtkahl/php-useful-helper": "^1.1"
   },
   "autoload": {
     "psr-4": {
