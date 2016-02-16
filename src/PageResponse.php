@@ -84,7 +84,7 @@ class PageResponse extends Response {
 		  switch ($type) {
 
 			case 'title':
-			  $html[] = buildHtmlTag('title', [], sprintf($this->_title_pattern, ...$value));
+			  $html[] = buildHtmlTag('title', [], sprintf($this->_title_pattern, $value));
 			  $html[] = buildHtmlTag('meta', ['name' => 'twitter:title', 'content' => $value]);
 			  $html[] = buildHtmlTag('meta', ['property' => 'og:title', 'content' => $value]);
 			  break;
