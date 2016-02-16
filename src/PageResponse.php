@@ -197,10 +197,11 @@ class PageResponse extends Response {
 		return $html;
 	}
 	
-	public function renderData()
+	public function setRenderData()
 	{
     $params = func_get_args(); // PHP7 will make that better ...
 		$this->_render_data = array_merge($this->_render_data, call_user_func_array('arrnize', $params)); // this will also be better with PHP7 ...
+		return $this;
 	}
 
 	public function getRenderData()
