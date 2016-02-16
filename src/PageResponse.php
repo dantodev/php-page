@@ -8,8 +8,8 @@ use Slim\Http\Response;
 /**
  * Class PageResponse
  * @package Dtkahl\PageResponse
- * @property \Slim\App $_app
- * @property \Dtkahl\SimplePhpView\ViewRenderer$_view
+ * @property \Slim\App $_app;
+ * @property \Dtkahl\SimpleView\ViewRenderer $_view;
  */
 class PageResponse extends Response {
 
