@@ -159,7 +159,7 @@ class PageResponse extends Response {
    */
 	public function addJavascript($data)
 	{
-		array_merge($this->_javascripts, arrnize($data));
+		$this->_javascripts = array_merge($this->_javascripts, arrnize($data));
 		return $this;
 	}
 
@@ -169,7 +169,7 @@ class PageResponse extends Response {
    */
 	public function addStylesheets($data)
 	{
-		array_merge($this->_stylesheets, arrnize($data));
+		$this->_stylesheets = array_merge($this->_stylesheets, arrnize($data));
 		return $this;
 	}
 
