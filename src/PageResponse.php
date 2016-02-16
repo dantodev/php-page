@@ -180,7 +180,7 @@ class PageResponse extends Response {
 	{
 		$html = "";
 		foreach ($this->_javascripts as $js) {
-			$html .= sprintf('<script type="text/javascript" src="%s.js"></script>\n', $js);
+			$html .= sprintf('<script type="text/javascript" src="js/%s.js"></script>\n', $js);
 		}
 		return $html;
 	}
@@ -192,7 +192,7 @@ class PageResponse extends Response {
 	{
 		$html = "";
 		foreach ($this->_stylesheets as $css) {
-			$html .= sprintf('<link type="text/css" rel="stylesheet" href="%s.css"></script>\n', $css);
+			$html .= sprintf('<link type="text/css" rel="stylesheet" href="css/%s.css"></script>\n', $css);
 		}
 		return $html;
 	}
