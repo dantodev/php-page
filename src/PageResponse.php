@@ -28,7 +28,7 @@ class PageResponse extends Response {
 		$this->_app 			= $app;
 		$container  			= $this->_app->getContainer();
 
-		$this->_view 			= $container->get('renderer');
+		$this->_renderer  = $container->get('renderer');
 
 		$headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
 		parent::__construct(200, $headers);
