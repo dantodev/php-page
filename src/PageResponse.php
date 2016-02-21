@@ -9,12 +9,12 @@ use Slim\Http\Response;
  * Class PageResponse
  * @package Dtkahl\PageResponse
  * @property \Slim\App $_app;
- * @property \Dtkahl\SimpleView\ViewRenderer $_view;
+ * @property \Dtkahl\SimpleView\ViewRenderer $_renderer;
  */
 class PageResponse extends Response {
 
 	private $_app;
-	private $_view;
+	private $_renderer;
 	private $_master_view;
 	private $_meta = [];
 	private $_title_pattern = "%s";
@@ -28,7 +28,7 @@ class PageResponse extends Response {
 		$this->_app 			= $app;
 		$container  			= $this->_app->getContainer();
 
-		$this->_view 			= $container->get('view');
+		$this->_view 			= $container->get('renderer');
 
 		$headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
 		parent::__construct(200, $headers);
@@ -36,7 +36,7 @@ class PageResponse extends Response {
 
 	public function render()
 	{
-		$this->getBody()->write($this->_view->render($this->getMasterView(), $this->getRenderData()));
+		$this->getBody()->write($this->_renderer->render($this->getMasterView(), $this->getRenderData()));
 		return $this;
 	}
 
@@ -60,7 +60,7 @@ class PageResponse extends Response {
 
 	public function view($file, $data = [])
 	{
-    return $this->_view->render( $file, $data);
+    return $this->_renderer->render( $file, $data);
 	}
 
   /**
