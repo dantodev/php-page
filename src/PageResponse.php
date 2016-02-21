@@ -74,6 +74,16 @@ class PageResponse extends Response {
 		return $this;
 	}
 
+	/**
+	 * @param $pattern
+	 * @return $this
+	 */
+	public function setTitlePattern($pattern)
+	{
+		$this->_title_pattern = $pattern;
+		return $this;
+	}
+
   /**
    * @return string
    */
