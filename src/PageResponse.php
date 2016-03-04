@@ -159,7 +159,7 @@ class PageResponse extends Response {
    * @param $css
    * @return $this
    */
-	public function addStylesheets($css)
+	public function addStylesheet($css)
 	{
 		$this->_stylesheets = array_merge($this->_stylesheets, is_array($css) ? $css : [$css]);
 		return $this;
