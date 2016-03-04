@@ -206,7 +206,10 @@ class PageResponse extends Response {
 		}
 		return $html;
 	}
-	
+
+  /**
+   * @return $this
+   */
 	public function setRenderData()
 	{
     $params = func_get_args(); // PHP7 will make that better ...
@@ -214,18 +217,28 @@ class PageResponse extends Response {
 		return $this;
 	}
 
+  /**
+   * @return array
+   */
 	public function getRenderData()
 	{
 		return array_merge($this->_render_data, ['response' => $this]);
 	}
-	
+
+  /**
+   * @return $this
+   */
 	public function section()
 	{
     $params = func_get_args(); // PHP7 will make that better ...
 		$this->_sections = array_merge($this->_sections, call_user_func_array('arrnize', $params)); // this will also be better with PHP7 ...
 		return $this;
 	}
-	
+
+  /**
+   * @param $name
+   * @return string
+   */
 	public function renderSection($name)
 	{
 		return array_key_exists($name, $this->_sections) ? $this->_sections[$name] : '';
