@@ -50,7 +50,7 @@ class PageResponse extends Response {
    * @param $value
    * @return $this
    */
-	public function meta($type, $value)
+	public function setMeta($type, $value)
 	{
     $this->_meta[$type] = $value;
 		return $this;
