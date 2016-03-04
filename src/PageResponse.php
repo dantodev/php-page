@@ -146,22 +146,22 @@ class PageResponse extends Response {
 	}
 
   /**
-   * @param $data
+   * @param $js
    * @return $this
    */
-	public function addJavascript($data)
+	public function addJavascript($js)
 	{
-		$this->_javascripts = array_merge($this->_javascripts, arrnize($data));
+		$this->_javascripts = array_merge($this->_javascripts, is_array($js) ? $js : [$js]);
 		return $this;
 	}
 
   /**
-   * @param $data
+   * @param $css
    * @return $this
    */
-	public function addStylesheets($data)
+	public function addStylesheets($css)
 	{
-		$this->_stylesheets = array_merge($this->_stylesheets, arrnize($data));
+		$this->_stylesheets = array_merge($this->_stylesheets, is_array($css) ? $css : [$css]);
 		return $this;
 	}
 
