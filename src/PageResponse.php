@@ -1,5 +1,6 @@
 <?php namespace Dtkahl\PageResponse;
 
+use Dtkahl\HtmlTagBuilder\HtmlTagBuilder;
 use Dtkahl\SimpleView\ViewRenderer;
 use Slim\Http\Headers;
 use Slim\Http\Response;
@@ -76,13 +77,13 @@ class PageResponse extends Response {
 		  switch ($type) {
 
 			case 'title':
-			  $html[] = buildHtmlTag('title', [], sprintf($this->_title_pattern, $value));
-			  $html[] = buildHtmlTag('meta', ['name' => 'twitter:title', 'content' => $value]);
-			  $html[] = buildHtmlTag('meta', ['property' => 'og:title', 'content' => $value]);
+			  $html[] = (new HtmlTagBuilder('title', [], sprintf($this->_title_pattern, $value)))->render();
+			  $html[] = (new HtmlTagBuilder('meta', ['name' => 'twitter:title', 'content' => $value]))->render();
+			  $html[] = (new HtmlTagBuilder('meta', ['property' => 'og:title', 'content' => $value]))->render();
 			  break;
 			  
 			case 'charset':
-			  $html[] = buildHtmlTag('meta', ['charset' => $value]);
+			  $html[] = (new HtmlTagBuilder('meta', ['charset' => $value]))->render();
 			  break;
 
 			case 'date':
@@ -97,44 +98,44 @@ class PageResponse extends Response {
 			case 'google-site-verification':
 			case 'csrf-token':
 			case 'twitter:site':
-			  $html[] = buildHtmlTag('meta', ['name' => $type, 'content' => $value]);
+			  $html[] = (new HtmlTagBuilder('meta', ['name' => $type, 'content' => $value]))->render();
 			  break;
 
 			case 'twitter:card':
 			case 'local':
 			case 'og:site_name':
-			  $html[] = buildHtmlTag('meta', ['property' => $type, 'content' => $value]);
+			  $html[] = (new HtmlTagBuilder('meta', ['property' => $type, 'content' => $value]))->render();
 			  break;
 
 			case 'description':
-			  $html[] = buildHtmlTag('meta', ['name' => 'description', 'content' => $value]);
-			  $html[] = buildHtmlTag('meta', ['name' => 'twitter:description', 'content' => $value]);
-			  $html[] = buildHtmlTag('meta', ['property' => 'og:description', 'content' => $value]);
+			  $html[] = (new HtmlTagBuilder('meta', ['name' => 'description', 'content' => $value]))->render();
+			  $html[] = (new HtmlTagBuilder('meta', ['name' => 'twitter:description', 'content' => $value]))->render();
+			  $html[] = (new HtmlTagBuilder('meta', ['property' => 'og:description', 'content' => $value]))->render();
 			  break;
 
 			case 'image':
-			  $html[] = buildHtmlTag('meta', ['name' => 'description', 'content' => $value]);
-			  $html[] = buildHtmlTag('meta', ['name' => 'twitter:description', 'content' => $value]);
-			  $html[] = buildHtmlTag('meta', ['property' => 'og:description', 'content' => $value]);
+			  $html[] = (new HtmlTagBuilder('meta', ['name' => 'description', 'content' => $value]))->render();
+			  $html[] = (new HtmlTagBuilder('meta', ['name' => 'twitter:description', 'content' => $value]))->render();
+			  $html[] = (new HtmlTagBuilder('meta', ['property' => 'og:description', 'content' => $value]))->render();
 			  break;
 
 			case 'url':
-			  $html[] = buildHtmlTag('meta', ['name' => 'twitter:url', 'content' => $value]);
-			  $html[] = buildHtmlTag('meta', ['property' => 'og:url', 'content' => $value]);
+			  $html[] = (new HtmlTagBuilder('meta', ['name' => 'twitter:url', 'content' => $value]))->render();
+			  $html[] = (new HtmlTagBuilder('meta', ['property' => 'og:url', 'content' => $value]))->render();
 			  break;
 
 			case 'author':
-			  $html[] = buildHtmlTag('meta', ['name' => 'author', 'content' => $value]);
-			  $html[] = buildHtmlTag('meta', ['property' => 'og:author', 'content' => $value]);
+			  $html[] = (new HtmlTagBuilder('meta', ['name' => 'author', 'content' => $value]))->render();
+			  $html[] = (new HtmlTagBuilder('meta', ['property' => 'og:author', 'content' => $value]))->render();
 			  break;
 
 			case 'publisher':
-			  $html[] = buildHtmlTag('meta', ['name' => 'publisher', 'content' => $value]);
-			  $html[] = buildHtmlTag('meta', ['property' => 'og:publisher', 'content' => $value]);
+			  $html[] = (new HtmlTagBuilder('meta', ['name' => 'publisher', 'content' => $value]))->render();
+			  $html[] = (new HtmlTagBuilder('meta', ['property' => 'og:publisher', 'content' => $value]))->render();
 			  break;
 
 			case 'language':
-			  $html[] = buildHtmlTag('meta', ['http-equiv' => 'content-language', 'content' => $value]);
+			  $html[] = (new HtmlTagBuilder('meta', ['http-equiv' => 'content-language', 'content' => $value]))->render();
 			  break;
 
 			case 'raw':
@@ -172,7 +173,10 @@ class PageResponse extends Response {
 	{
 		$html = "";
 		foreach ($this->_javascripts as $js) {
-			$html .= sprintf('<script type="text/javascript" src="js/%s.js"></script>', $js)."\n";
+      $html .= (new HtmlTagBuilder('script', [
+        'type' => "text/javascript",
+        'src' => "js/$js.js"
+      ]))->render()."\n";
 		}
 		return $html;
 	}
@@ -184,7 +188,11 @@ class PageResponse extends Response {
 	{
 		$html = "";
 		foreach ($this->_stylesheets as $css) {
-			$html .= sprintf('<link type="text/css" rel="stylesheet" href="css/%s.css">', $css)."\n";
+      $html .= (new HtmlTagBuilder('script', [
+          'type' => "text/css",
+          'rel' => "stylesheet",
+          'src' => "css/$css.css"
+      ]))->render()."\n";
 		}
 		return $html;
 	}
