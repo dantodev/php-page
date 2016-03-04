@@ -52,7 +52,7 @@ class PageResponse extends Response {
    */
 	public function meta($type, $value)
 	{
-		$this->_meta = array_merge($this->_meta, arrnize($type, $value));
+    $this->_meta[$type] = $value;
 		return $this;
 	}
 
@@ -190,14 +190,15 @@ class PageResponse extends Response {
 	}
 
   /**
+   * @param $name
+   * @param $value
    * @return $this
    */
-	public function section()
-	{
-    $params = func_get_args(); // PHP7 will make that better ...
-		$this->_sections = array_merge($this->_sections, call_user_func_array('arrnize', $params)); // this will also be better with PHP7 ...
-		return $this;
-	}
+  public function setSection($name, $value)
+  {
+    $this->_sections[$name] = $value;
+    return $this;
+  }
 
   /**
    * @param $name
