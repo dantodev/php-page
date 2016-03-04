@@ -1,6 +1,6 @@
 <?php namespace Dtkahl\PageResponse;
 
-use Slim\App;
+use Dtkahl\SimpleView\ViewRenderer;
 use Slim\Http\Headers;
 use Slim\Http\Response;
 
@@ -8,54 +8,36 @@ use Slim\Http\Response;
 /**
  * Class PageResponse
  * @package Dtkahl\PageResponse
- * @property \Slim\App $_app;
- * @property \Dtkahl\SimpleView\ViewRenderer $_renderer;
  */
 class PageResponse extends Response {
 
-	private $_app;
 	private $_renderer;
 	private $_master_view;
+  private $_render_data = [];
 	private $_meta = [];
 	private $_title_pattern = "%s";
 	private $_javascripts = [];
 	private $_stylesheets = [];
-	private $_render_data = [];
 	private $_sections = [];
 
-	public function __construct(App $app)
+	public function __construct(ViewRenderer $renderer, string $master_view, array $render_data = [])
 	{
-		$this->_app 			= $app;
-		$container  			= $this->_app->getContainer();
-
-		$this->_renderer  = $container->get('renderer');
+		$this->_renderer    = $renderer;
+		$this->_master_view = $master_view;
+		$this->_render_data = $render_data;
 
 		$headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
 		parent::__construct(200, $headers);
 	}
 
-	public function render()
+	public function render(array $render_data = [])
 	{
-		$this->getBody()->write($this->_renderer->render($this->getMasterView(), $this->getRenderData()));
+		$this->getBody()->write($this->_renderer->render($this->_master_view, array_merge(
+        $this->_render_data,
+        $render_data,
+        ['response' => $this]
+    )));
 		return $this;
-	}
-
-  /**
-   * @param string $master_view
-   * @return $this
-   */
-	public function setMasterView($master_view)
-	{
-		$this->_master_view = $master_view;
-    return $this;
-	}
-
-  /**
-   * @return string
-   */
-	public function getMasterView()
-	{
-		return $this->_master_view;
 	}
 
 	public function view($file, $data = [])
@@ -205,24 +187,6 @@ class PageResponse extends Response {
 			$html .= sprintf('<link type="text/css" rel="stylesheet" href="css/%s.css">', $css)."\n";
 		}
 		return $html;
-	}
-
-  /**
-   * @return $this
-   */
-	public function setRenderData()
-	{
-    $params = func_get_args(); // PHP7 will make that better ...
-		$this->_render_data = array_merge($this->_render_data, call_user_func_array('arrnize', $params)); // this will also be better with PHP7 ...
-		return $this;
-	}
-
-  /**
-   * @return array
-   */
-	public function getRenderData()
-	{
-		return array_merge($this->_render_data, ['response' => $this]);
 	}
 
   /**
