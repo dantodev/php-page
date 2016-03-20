@@ -42,7 +42,7 @@ class PageResponse extends Response {
    */
 	public function render(array $render_data = [])
 	{
-		$this->getBody()->write($this->_renderer->render($this->_master_view, array_merge(
+		$this->getBody()->write($this->view($this->_master_view, array_merge(
         $this->_render_data,
         $render_data,
         ['response' => $this]
@@ -185,14 +185,14 @@ class PageResponse extends Response {
    */
 	public function renderJavascripts()
 	{
-		$html = "";
+		$elements = [];
 		foreach ($this->_javascripts as $js) {
-      $html .= (new HtmlTagBuilder('script', [
+      $elements[] = (new HtmlTagBuilder('script', [
         'type' => "text/javascript",
         'src' => "js/$js.js"
-      ]))->render()."\n";
+      ]))->render();
 		}
-		return $html;
+		return implode("\n", $elements);
 	}
 
   /**
@@ -200,15 +200,15 @@ class PageResponse extends Response {
    */
 	public function renderStylesheets()
 	{
-		$html = "";
+    $elements = [];
 		foreach ($this->_stylesheets as $css) {
-      $html .= (new HtmlTagBuilder('script', [
+      $elements[] = (new HtmlTagBuilder('script', [
           'type' => "text/css",
           'rel' => "stylesheet",
           'src' => "css/$css.css"
-      ]))->render()."\n";
+      ]))->render();
 		}
-		return $html;
+		return implode("\n", $elements);
 	}
 
   /**
