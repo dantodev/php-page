@@ -202,7 +202,7 @@ class PageResponse extends Response {
 	{
     $elements = [];
 		foreach ($this->_stylesheets as $css) {
-      $elements[] = (new HtmlTagBuilder('script', [
+      $elements[] = (new HtmlTagBuilder('link', [
           'type' => "text/css",
           'rel' => "stylesheet",
           'src' => "css/$css.css"
