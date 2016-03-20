@@ -21,6 +21,11 @@ class PageResponse extends Response {
 	private $_stylesheets = [];
 	private $_sections = [];
 
+  /**
+   * @param ViewRenderer $renderer
+   * @param string $master_view
+   * @param array $render_data
+   */
 	public function __construct(ViewRenderer $renderer, string $master_view, array $render_data = [])
 	{
 		$this->_renderer    = $renderer;
@@ -31,6 +36,10 @@ class PageResponse extends Response {
 		parent::__construct(200, $headers);
 	}
 
+  /**
+   * @param array $render_data
+   * @return $this
+   */
 	public function render(array $render_data = [])
 	{
 		$this->getBody()->write($this->_renderer->render($this->_master_view, array_merge(
@@ -41,6 +50,11 @@ class PageResponse extends Response {
 		return $this;
 	}
 
+  /**
+   * @param $file
+   * @param array $data
+   * @return string
+   */
 	public function view($file, $data = [])
 	{
     return $this->_renderer->render( $file, $data);

@@ -1,0 +1,1 @@
+<!DOCTYPE html><html><head></head><body><div><?php echo $foo ?></div><div><?php echo $foo2 ?></div></body></html>
