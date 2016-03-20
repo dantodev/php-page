@@ -55,7 +55,7 @@ class PageResponseTest extends \PHPUnit_Framework_TestCase {
   {
     $this->_response->addStylesheet(['foo2', 'bar2']);
     $this->assertEquals(
-        "<script type=\"text/javascript\" src=\"js/foo.js\"></script>\n<script type=\"text/javascript\" src=\"js/bar.js\"></script>",
+        "<link type=\"text/css\" rel=\"stylesheet\" src=\"css/foo2.css\">\n<link type=\"text/css\" rel=\"stylesheet\" src=\"css/bar2.css\">",
         $this->_response->renderStylesheets()
     );
   }
