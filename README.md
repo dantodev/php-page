@@ -7,6 +7,6 @@
 
 ## Dependencies
 
-* `PHP >= 7.0.0`
+* `PHP >= 5.6.0`
 
 TBA
