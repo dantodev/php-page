@@ -24,18 +24,23 @@ class PageResponseTest extends \PHPUnit_Framework_TestCase {
     );
   }
 
-  public function testSection()
+  public function testRenderData()
   {
-    $this->_response->setSection('foo', 'bar');
-    $this->assertEquals('bar', $this->_response->renderSection('foo'));
-    $this->assertEquals(null, $this->_response->renderSection('bar2'));
+    $this->_response->render_data->set('foo3', 'bar3');
+    $this->assertEquals('bar3', $this->_response->render_data->get('foo3'));
   }
 
-  public function testMetaAndTitlePattern()
+  public function testSection()
   {
-    $this->_response
-      ->setTitlePattern('%s | bar')
-      ->setMeta('title', 'foo');
+    $this->_response->sections->set('foo', 'bar');
+    $this->assertEquals('bar', $this->_response->sections->get('foo'));
+    $this->assertEquals(null, $this->_response->sections->get('bar2'));
+  }
+
+  public function testMetaAndOptions()
+  {
+    $this->_response->options->set('title_pattern', '%s | bar');
+    $this->_response->meta->set('title', 'foo');
     $this->assertEquals(
         "<title>foo | bar</title>\n<meta name=\"twitter:title\" content=\"foo\">\n<meta property=\"og:title\" content=\"foo\">",
         $this->_response->renderMeta()

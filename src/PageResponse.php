@@ -1,5 +1,7 @@
 <?php namespace Dtkahl\PageResponse;
 
+use Dtkahl\ArrayTools\Collection;
+use Dtkahl\ArrayTools\Map;
 use Dtkahl\HtmlTagBuilder\HtmlTagBuilder;
 use Dtkahl\SimpleView\ViewRenderer;
 use Slim\Http\Headers;
@@ -9,17 +11,21 @@ use Slim\Http\Response;
 /**
  * Class PageResponse
  * @package Dtkahl\PageResponse
+ * @property Map $meta;
+ * @property Map $options;
+ * @property Map $sections;
+ * @property Map $render_data;
  */
 class PageResponse extends Response {
 
 	private $_renderer;
 	private $_master_view;
-  private $_render_data = [];
-	private $_meta = [];
-	private $_title_pattern = "%s";
-	private $_javascripts = [];
-	private $_stylesheets = [];
-	private $_sections = [];
+  private $_render_data;
+	private $_meta;
+	private $_options;
+	private $_scripts;
+	private $_styles;
+	private $_sections;
 
   /**
    * @param ViewRenderer $renderer
@@ -30,11 +36,28 @@ class PageResponse extends Response {
 	{
 		$this->_renderer    = $renderer;
 		$this->_master_view = (string) $master_view;
-		$this->_render_data = $render_data;
+		$this->_render_data = new Map($render_data);
+		$this->_meta 				= new Map();
+		$this->_options 		= new Map(['title_pattern' => '%s']);
+    $this->_sections  	= new Map();
+    $this->_scripts			= new Collection();
+    $this->_styles			= new Collection();
 
 		$headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
 		parent::__construct(200, $headers);
 	}
+
+  /**
+   * @param string $name
+   * @return null
+   */
+  public function __get($name)
+  {
+    if (in_array($name, ['meta', 'options', 'sections', 'render_data'])) {
+      return $this->{'_'.$name};
+    }
+    return null;
+  }
 
   /**
    * @param array $render_data
@@ -43,7 +66,7 @@ class PageResponse extends Response {
 	public function render(array $render_data = [])
 	{
 		$this->getBody()->write($this->view($this->_master_view, array_merge(
-        $this->_render_data,
+        $this->_render_data->toArray(),
         $render_data,
         ['response' => $this]
     )));
@@ -57,28 +80,7 @@ class PageResponse extends Response {
    */
 	public function view($file, $data = [])
 	{
-    return $this->_renderer->render( $file, $data);
-	}
-
-  /**
-   * @param $type
-   * @param $value
-   * @return $this
-   */
-	public function setMeta($type, $value)
-	{
-    $this->_meta[$type] = $value;
-		return $this;
-	}
-
-	/**
-	 * @param $pattern
-	 * @return $this
-	 */
-	public function setTitlePattern($pattern)
-	{
-		$this->_title_pattern = $pattern;
-		return $this;
+    return $this->_renderer->render($file, $data);
 	}
 
   /**
@@ -87,11 +89,12 @@ class PageResponse extends Response {
 	public function renderMeta()
 	{
 		$html = [];
-		foreach ($this->_meta as $type=>$value) {
+		foreach ($this->_meta->toArray() as $type=>$value) {
 		  switch ($type) {
 
 			case 'title':
-			  $html[] = (new HtmlTagBuilder('title', [], sprintf($this->_title_pattern, $value)))->render();
+        $title = sprintf($this->options->get('title_pattern', '%s'), $value);
+			  $html[] = (new HtmlTagBuilder('title', [], $title))->render();
 			  $html[] = (new HtmlTagBuilder('meta', ['name' => 'twitter:title', 'content' => $value]))->render();
 			  $html[] = (new HtmlTagBuilder('meta', ['property' => 'og:title', 'content' => $value]))->render();
 			  break;
@@ -166,7 +169,7 @@ class PageResponse extends Response {
    */
 	public function addJavascript($js)
 	{
-		$this->_javascripts = array_merge($this->_javascripts, (array) $js);
+		$this->_scripts->merge((array) $js);
 		return $this;
 	}
 
@@ -176,7 +179,7 @@ class PageResponse extends Response {
    */
 	public function addStylesheet($css)
 	{
-		$this->_stylesheets = array_merge($this->_stylesheets, (array) $css);
+    $this->_styles->merge((array) $css);
 		return $this;
 	}
 
@@ -186,7 +189,7 @@ class PageResponse extends Response {
 	public function renderJavascripts()
 	{
 		$elements = [];
-		foreach ($this->_javascripts as $js) {
+		while ($js = $this->_scripts->next()) {
       $elements[] = (new HtmlTagBuilder('script', [
         'type' => "text/javascript",
         'src' => "js/$js.js"
@@ -201,7 +204,7 @@ class PageResponse extends Response {
 	public function renderStylesheets()
 	{
     $elements = [];
-		foreach ($this->_stylesheets as $css) {
+    while ($css = $this->_styles->next()) {
       $elements[] = (new HtmlTagBuilder('link', [
           'type' => "text/css",
           'rel' => "stylesheet",
@@ -209,26 +212,6 @@ class PageResponse extends Response {
       ]))->render();
 		}
 		return implode("\n", $elements);
-	}
-
-  /**
-   * @param $name
-   * @param $value
-   * @return $this
-   */
-  public function setSection($name, $value)
-  {
-    $this->_sections[$name] = $value;
-    return $this;
-  }
-
-  /**
-   * @param $name
-   * @return string
-   */
-	public function renderSection($name)
-	{
-		return array_key_exists($name, $this->_sections) ? $this->_sections[$name] : '';
 	}
 
 }
