@@ -19,7 +19,6 @@ use Slim\Http\Response;
 class PageResponse extends Response {
 
 	private $_renderer;
-	private $_master_view;
   private $_render_data;
 	private $_meta;
 	private $_options;
@@ -35,10 +34,9 @@ class PageResponse extends Response {
 	public function __construct(ViewRenderer $renderer, $master_view, array $render_data = [])
 	{
 		$this->_renderer    = $renderer;
-		$this->_master_view = (string) $master_view;
 		$this->_render_data = new Map($render_data);
 		$this->_meta 				= new Map();
-		$this->_options 		= new Map(['title_pattern' => '%s']);
+		$this->_options 		= new Map(['master_view' => (string) $master_view]);
     $this->_sections  	= new Map();
     $this->_scripts			= new Collection();
     $this->_styles			= new Collection();
@@ -65,7 +63,7 @@ class PageResponse extends Response {
    */
 	public function render(array $render_data = [])
 	{
-		$this->getBody()->write($this->view($this->_master_view, array_merge(
+		$this->getBody()->write($this->view($this->_options->get('master_view'), array_merge(
         $this->_render_data->toArray(),
         $render_data,
         ['response' => $this]
