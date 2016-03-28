@@ -19,6 +19,7 @@ $response = new PageResponse(
     'layout.php' // master layout
 );
 ```
+Put this into a slim container.
 
 
 ## Functionality
