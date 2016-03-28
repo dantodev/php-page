@@ -26,10 +26,10 @@ class PageResponse extends Response {
    * @param string $master_view
    * @param array $render_data
    */
-	public function __construct(ViewRenderer $renderer, string $master_view, array $render_data = [])
+	public function __construct(ViewRenderer $renderer, $master_view, array $render_data = [])
 	{
 		$this->_renderer    = $renderer;
-		$this->_master_view = $master_view;
+		$this->_master_view = (string) $master_view;
 		$this->_render_data = $render_data;
 
 		$headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
