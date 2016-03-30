@@ -186,14 +186,12 @@ class PageResponse extends Response {
    */
 	public function renderJavascripts()
 	{
-		$elements = [];
-		while ($js = $this->_scripts->next()) {
-      $elements[] = (new HtmlTagBuilder('script', [
-        'type' => "text/javascript",
-        'src' => "js/$js.js"
-      ]))->render();
-		}
-		return implode("\n", $elements);
+		return $this->_scripts->copy()->map(function ($js) {
+			return (new HtmlTagBuilder('script', [
+					'type' => "text/javascript",
+					'src' => "js/$js.js"
+			]))->render();
+		})->join("\n");
 	}
 
   /**
@@ -201,15 +199,13 @@ class PageResponse extends Response {
    */
 	public function renderStylesheets()
 	{
-    $elements = [];
-    while ($css = $this->_styles->next()) {
-      $elements[] = (new HtmlTagBuilder('link', [
-          'type' => "text/css",
-          'rel' => "stylesheet",
-          'src' => "css/$css.css"
-      ]))->render();
-		}
-		return implode("\n", $elements);
+		return $this->_styles->copy()->map(function ($css) {
+			return (new HtmlTagBuilder('link', [
+					'type' => "text/css",
+					'rel' => "stylesheet",
+					'src' => "css/$css.css"
+			]))->render();
+		})->join("\n");
 	}
 
 }
