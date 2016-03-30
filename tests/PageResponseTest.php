@@ -56,8 +56,9 @@ class PageResponseTest extends \PHPUnit_Framework_TestCase {
   public function testJavascripts()
   {
     $this->_response->addJavascript(['foo', 'bar']);
+    $this->_response->option('js_path', 'custom/js/path');
     $this->assertEquals(
-        "<script type=\"text/javascript\" src=\"js/foo.js\"></script>\n<script type=\"text/javascript\" src=\"js/bar.js\"></script>",
+        "<script type=\"text/javascript\" src=\"custom/js/path/foo.js\"></script>\n<script type=\"text/javascript\" src=\"custom/js/path/bar.js\"></script>",
         $this->_response->renderJavascripts()
     );
   }
@@ -65,8 +66,9 @@ class PageResponseTest extends \PHPUnit_Framework_TestCase {
   public function testStylesheets()
   {
     $this->_response->addStylesheet(['foo2', 'bar2']);
+    $this->_response->option('css_path', 'custom/css/path');
     $this->assertEquals(
-        "<link type=\"text/css\" rel=\"stylesheet\" src=\"css/foo2.css\">\n<link type=\"text/css\" rel=\"stylesheet\" src=\"css/bar2.css\">",
+        "<link type=\"text/css\" rel=\"stylesheet\" src=\"custom/css/path/foo2.css\">\n<link type=\"text/css\" rel=\"stylesheet\" src=\"custom/css/path/bar2.css\">",
         $this->_response->renderStylesheets()
     );
   }

@@ -210,7 +210,7 @@ class PageResponse extends Response {
 		return $this->_scripts->copy()->map(function ($js) {
 			return (new HtmlTagBuilder('script', [
 					'type' => "text/javascript",
-					'src' => "js/$js.js"
+					'src' => $this->options->get('js_path', 'js') . "/$js.js"
 			]))->render();
 		})->join("\n");
 	}
@@ -224,7 +224,7 @@ class PageResponse extends Response {
 			return (new HtmlTagBuilder('link', [
 					'type' => "text/css",
 					'rel' => "stylesheet",
-					'src' => "css/$css.css"
+					'src' => $this->options->get('css_path', 'css') . "/$css.css"
 			]))->render();
 		})->join("\n");
 	}
