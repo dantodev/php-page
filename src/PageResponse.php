@@ -15,6 +15,10 @@ use Slim\Http\Response;
  * @property Map $options;
  * @property Map $sections;
  * @property Map $render_data;
+ * @method meta($key, $value = null);
+ * @method option($key, $value = null);
+ * @method section($key, $value = null);
+ * @method renderData($key, $value = null);
  */
 class PageResponse extends Response {
 
@@ -57,7 +61,24 @@ class PageResponse extends Response {
     return null;
   }
 
-  /**
+	public function __call($name, $args)
+	{
+    $methods = [
+        'meta'        => '_meta',
+        'option'      => '_options',
+        'section'     => '_sections',
+        'renderData'  => '_render_data',
+    ];
+		if (array_key_exists($name, $methods)) {
+			if (count($args) == 1) {
+				return $this->{$methods[$name]}->get($args[0]);
+			}
+			return $this->{$methods[$name]}->set($args[0], $args[1]);
+		}
+		throw new \RuntimeException("unknown method \"$name\" called");
+	}
+
+	/**
    * @param array $render_data
    * @return $this
    */

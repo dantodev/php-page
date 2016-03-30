@@ -15,6 +15,12 @@ class PageResponseTest extends \PHPUnit_Framework_TestCase {
     $this->_response = new PageResponse(new ViewRenderer(__DIR__.'/testviews/'), 'layout.php', ['foo' => 'bar']);
   }
 
+  public function testMagicCall()
+  {
+    $this->_response->section('foo', 'bar');
+    $this->assertEquals("bar", $this->_response->section('foo'));
+  }
+
   public function testRender()
   {
     $this->assertInstanceOf(Response::class, $this->_response->render(['foo2' => 'bar2']));
