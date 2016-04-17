@@ -15,10 +15,10 @@ use Slim\Http\Response;
  * @property Map $options;
  * @property Map $sections;
  * @property Map $render_data;
- * @method meta($key, $value = null);
- * @method option($key, $value = null);
- * @method section($key, $value = null);
- * @method renderData($key, $value = null);
+ * @method mixed|$this meta($key, $value = null);
+ * @method mixed|$this option($key, $value = null);
+ * @method mixed|$this section($key, $value = null);
+ * @method mixed|$this renderData($key, $value = null);
  */
 class PageResponse extends Response {
 
