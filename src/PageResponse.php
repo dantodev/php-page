@@ -82,25 +82,25 @@ class PageResponse extends Response {
    * @param array $render_data
    * @return $this
    */
-	public function render(array $render_data = [])
-	{
-		$this->getBody()->write($this->view($this->_options->get('master_view'), array_merge(
-        $this->_render_data->toArray(),
-        $render_data,
-        ['response' => $this]
-    )));
-		return $this;
-	}
+  public function render(array $render_data = [])
+  {
+    $this->getBody()->write($this->view($this->_options->get('master_view'), $render_data));
+    return $this;
+  }
 
   /**
    * @param $file
    * @param array $data
    * @return string
    */
-	public function view($file, $data = [])
-	{
-    return $this->_renderer->render($file, $data);
-	}
+  public function view($file, $data = [])
+  {
+    return $this->_renderer->render($file, array_merge(
+        $this->_render_data->toArray(),
+        $data,
+        ['response' => $this]
+    ));
+  }
 
   /**
    * @return string
