@@ -73,7 +73,8 @@ class PageResponse extends Response {
 			if (count($args) == 1) {
 				return $this->{$methods[$name]}->get($args[0]);
 			}
-			return $this->{$methods[$name]}->set($args[0], $args[1]);
+			$this->{$methods[$name]}->set($args[0], $args[1]);
+      return $this;
 		}
 		throw new \RuntimeException("unknown method \"$name\" called");
 	}
