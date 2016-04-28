@@ -52,7 +52,7 @@ class PageResponseTest extends \PHPUnit_Framework_TestCase {
     $this->_page->addStylesheet(['foo2', 'bar2']);
     $this->_page->option('css_path', 'custom/css/path');
     $this->assertEquals(
-        "<link type=\"text/css\" rel=\"stylesheet\" src=\"custom/css/path/foo2.css\">\n<link type=\"text/css\" rel=\"stylesheet\" src=\"custom/css/path/bar2.css\">",
+        "<link type=\"text/css\" rel=\"stylesheet\" href=\"custom/css/path/foo2.css\">\n<link type=\"text/css\" rel=\"stylesheet\" href=\"custom/css/path/bar2.css\">",
         $this->_page->renderStylesheets()
     );
   }
