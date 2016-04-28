@@ -1,11 +1,8 @@
-<?php namespace Dtkahl\PageResponse;
+<?php namespace Dtkahl\Page;
 
 use Dtkahl\ArrayTools\Collection;
 use Dtkahl\ArrayTools\Map;
 use Dtkahl\HtmlTagBuilder\HtmlTagBuilder;
-use Dtkahl\SimpleView\ViewRenderer;
-use Slim\Http\Headers;
-use Slim\Http\Response;
 
 
 /**
@@ -14,16 +11,9 @@ use Slim\Http\Response;
  * @property Map $meta;
  * @property Map $options;
  * @property Map $sections;
- * @property Map $render_data;
- * @method meta($key, $value = null);
- * @method option($key, $value = null);
- * @method section($key, $value = null);
- * @method renderData($key, $value = null);
  */
-class PageResponse extends Response {
+class Page {
 
-	private $_renderer;
-  private $_render_data;
 	private $_meta;
 	private $_options;
 	private $_scripts;
@@ -31,22 +21,15 @@ class PageResponse extends Response {
 	private $_sections;
 
   /**
-   * @param ViewRenderer $renderer
-   * @param string $master_view
-   * @param array $render_data
+   * Page constructor.
    */
-	public function __construct(ViewRenderer $renderer, $master_view, array $render_data = [])
+	public function __construct()
 	{
-		$this->_renderer    = $renderer;
-		$this->_render_data = new Map($render_data);
 		$this->_meta 				= new Map();
-		$this->_options 		= new Map(['master_view' => (string) $master_view]);
+		$this->_options 		= new Map();
     $this->_sections  	= new Map();
     $this->_scripts			= new Collection();
     $this->_styles			= new Collection();
-
-		$headers = new Headers(['Content-Type' => 'text/html; charset=UTF-8']);
-		parent::__construct(200, $headers);
 	}
 
   /**
@@ -55,52 +38,50 @@ class PageResponse extends Response {
    */
   public function __get($name)
   {
-    if (in_array($name, ['meta', 'options', 'sections', 'render_data'])) {
+    if (in_array($name, ['meta', 'options', 'sections'])) {
       return $this->{'_'.$name};
     }
     return null;
   }
 
-	public function __call($name, $args)
-	{
-    $methods = [
-        'meta'        => '_meta',
-        'option'      => '_options',
-        'section'     => '_sections',
-        'renderData'  => '_render_data',
-    ];
-		if (array_key_exists($name, $methods)) {
-			if (count($args) == 1) {
-				return $this->{$methods[$name]}->get($args[0]);
-			}
-			return $this->{$methods[$name]}->set($args[0], $args[1]);
-		}
-		throw new \RuntimeException("unknown method \"$name\" called");
-	}
-
-	/**
-   * @param array $render_data
-   * @return $this
+  /**
+   * @param $key
+   * @param mixed|null $value
+   * @return Map|mixed|null
    */
-	public function render(array $render_data = [])
-	{
-		$this->getBody()->write($this->view($this->_options->get('master_view'), array_merge(
-        $this->_render_data->toArray(),
-        $render_data,
-        ['response' => $this]
-    )));
-		return $this;
-	}
+  public function section($key, $value = null)
+  {
+    if ($value == null) {
+      return $this->_sections->get($key);
+    }
+    return $this->_sections->set($key, $value);
+  }
 
   /**
-   * @param $file
-   * @param array $data
-   * @return string
+   * @param $key
+   * @param mixed|null $value
+   * @return Map|mixed|null
    */
-	public function view($file, $data = [])
-	{
-    return $this->_renderer->render($file, $data);
-	}
+  public function option($key, $value = null)
+  {
+    if ($value == null) {
+      return $this->_options->get($key);
+    }
+    return $this->_options->set($key, $value);
+  }
+
+  /**
+   * @param $key
+   * @param mixed|null $value
+   * @return Map|mixed|null
+   */
+  public function meta($key, $value = null)
+  {
+    if ($value == null) {
+      return $this->_meta->get($key);
+    }
+    return $this->_meta->set($key, $value);
+  }
 
   /**
    * @return string
