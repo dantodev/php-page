@@ -205,7 +205,7 @@ class Page {
 			return (new HtmlTagBuilder('link', [
 					'type' => "text/css",
 					'rel' => "stylesheet",
-					'src' => $this->options->get('css_path', 'css') . "/$css.css"
+					'href' => $this->options->get('css_path', 'css') . "/$css.css"
 			]))->render();
 		})->join("\n");
 	}
