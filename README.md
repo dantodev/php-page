@@ -1,10 +1,10 @@
-[![Latest Stable Version](https://poser.pugx.org/dtkahl/page-response/v/stable)](https://packagist.org/packages/dtkahl/page-response)
-[![License](https://poser.pugx.org/dtkahl/page-response/license)](https://packagist.org/packages/dtkahl/page-response)
-[![Build Status](https://travis-ci.org/dtkahl/page-response.svg?branch=master)](https://travis-ci.org/dtkahl/page-response)
+[![Latest Stable Version](https://poser.pugx.org/dtkahl/php-page/v/stable)](https://packagist.org/packages/dtkahl/php-page)
+[![License](https://poser.pugx.org/dtkahl/php-page/license)](https://packagist.org/packages/dtkahl/php-page)
+[![Build Status](https://travis-ci.org/dtkahl/php-page.svg?branch=master)](https://travis-ci.org/dtkahl/php-page)
 
-# PHP PageResponse
+# PHP Page
 
-Extended ResponseObject for slim3.
+PHP helper class for building HTML response.
 
 
 ## Dependencies
@@ -14,45 +14,24 @@ Extended ResponseObject for slim3.
 ## Usage
 
 ```php
-$response = new PageResponse(
-    new ViewRenderer(__DIR__.'/views/'), // ViewRender
-    'layout.php' // master layout
-);
+$page = new \Dtkahl\Page\Page;
 ```
-Put this into a slim container.
 
 
 ## Functionality
 
-### Master layout
-The master layout should contain the main HTML structur of your application.
-It can be defined on costruct or through `options` property:
+#### meta data
+
+add meta data:
 
 ```php
-$response->options->set('master_view', 'example.php');
+$page->meta->set('title', 'foobar');
 ```
 
-### Render data
-Informations you store in render data, will be pushed directly as variable to the master view when you render the response.
-You can pass render data to construct() and render() methods or through `redner_data` property:
+render meta data (ibnside your template):
 
 ```php
-$response->redner_data->set('foo', 'bar');
-```
-
-### Meta data
-Automatically generate meta for HTML head. You cann add as example a title through `meta` property:
-
-```php
-$response->redner_data->set('title', 'foobar');
-```
-
-**Info:** the render data key 'response' is reserved for response instance.
-
-You have to place the following in your master layout HTML head:
-
-```php
-<?php echo $response->renderMeta() ?>
+<?php echo $page->renderMeta() ?>
 ```
 
 supported keys:
@@ -82,25 +61,29 @@ supported keys:
 * (raw)
 
 ### Options
-With options you can configure the response. 
-* `master_view` : master view for response
+With options you can configure the page: 
 * `title_pattern` : pattern for meta title. Example: `%s | foobar.com` 
 
+```php
+$page->options->set('title_pattern', `%s | foobar.com`);
+```
+
 #### asset managment (JS, CSS)
-You cann define which files should be loaded.
+
+You can define which files should be loaded.
 
 ```php
-$response->addJavascript('script'); // ".js" automatically added
+$page->addJavascript('script'); // ".js" automatically added
 ```
 
 ```php
-$response->addStylesheet('style'); // ".css" automatically added
+$page->addStylesheet('style'); // ".css" automatically added
 ```
 
-In the master view you have to include the following on your desired position:
+... and render the includes in your template:
 
 ```php
-<?php echo $response->renderJavascripts() ?>
+<?php echo $page->renderJavascripts() ?>
 ```
 
 ```php
@@ -108,7 +91,7 @@ In the master view you have to include the following on your desired position:
 ```
 
 #### sections
-With sections you have one more way to push informations to the master view.
+With sections you have one more way to push informations to your view.
 
 Example to pass simple information...
 
@@ -116,14 +99,18 @@ Example to pass simple information...
 $response->sections->set('foo', 'bar')
 ```
 
-...or a subview...
-
-```php
-$response->sections->set('profile', $response->view('profile.php', ['id' => 4]))
-```
-
-In master layout you have to do the following:
+In your view you can retrieve the section:
 
 ```php
 <?php echo $response->sections->get('foo') ?>
 ```
+
+
+#### aliases
+
+* `$page->meta($key)` does the same like `$page->meta->get($key)`
+* `$page->meta($key, $value)` does the same like `$page->meta->set($key, $value)`
+* `$page->option($key)` does the same like `$page->options->get($key)`
+* `$page->option($key, $value)` does the same like `$page->options->set($key, $value)`
+* `$page->section($key)` does the same like `$page->sections->get($key)`
+* `$page->section($key, $value)` does the same like `$page->sections->set($key, $value)`
