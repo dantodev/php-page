@@ -60,7 +60,7 @@ supported keys:
 * language
 * (raw)
 
-### Options
+#### options
 With options you can configure the page: 
 * `title_pattern` : pattern for meta title. Example: `%s | foobar.com` 
 
