@@ -192,7 +192,7 @@ class Page
         return $this->_scripts->copy()->map(function ($js) {
             return (new HtmlTagBuilder('script', [
                 'type' => "text/javascript",
-                'src' => $this->options->get('js_path', 'js') . "/$js.js"
+                'src' => $this->options->get('js_path', '/js') . "/$js.js"
             ]))->render();
         })->join("\n");
     }
@@ -206,7 +206,7 @@ class Page
             return (new HtmlTagBuilder('link', [
                 'type' => "text/css",
                 'rel' => "stylesheet",
-                'href' => $this->options->get('css_path', 'css') . "/$css.css"
+                'href' => $this->options->get('css_path', '/css') . "/$css.css"
             ]))->render();
         })->join("\n");
     }
