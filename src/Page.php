@@ -20,6 +20,7 @@ class Page
     private $_scripts;
     private $_styles;
     private $_sections;
+    private $_areas;
 
     /**
      * Page constructor.
@@ -29,6 +30,7 @@ class Page
         $this->_meta = new Map();
         $this->_options = new Map();
         $this->_sections = new Map();
+        $this->_areas = new Map();
         $this->_scripts = new Collection();
         $this->_styles = new Collection();
     }
@@ -56,6 +58,18 @@ class Page
             return $this->_sections->get($key);
         }
         return $this->_sections->set($key, $value);
+    }
+
+    /**
+     * @param $key
+     * @return Collection
+     */
+    public function area($key)
+    {
+        if (!$this->_areas->has($key)) {
+            $this->_areas->set($key, new Collection);
+        }
+        return $this->_areas->get($key);
     }
 
     /**

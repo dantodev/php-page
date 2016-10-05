@@ -87,24 +87,41 @@ $page->addStylesheet('style'); // ".css" automatically added
 ```
 
 ```php
-<?php echo $response->renderStylesheets() ?>
+<?php echo $page->renderStylesheets() ?>
 ```
 
 #### sections
-With sections you have one more way to push informations to your view.
+With sections you have one more way to push information to your view.
 
 Example to pass simple information...
 
 ```php
-$response->sections->set('foo', 'bar')
+$page->sections->set('foo', 'bar')
 ```
 
 In your view you can retrieve the section:
 
 ```php
-<?php echo $response->sections->get('foo') ?>
+<?php echo $page->sections->get('foo') ?>
 ```
 
+#### areas
+Almost like sections, but an area is a collection of multiple items. (Like widgets in a sidebar)
+
+Example:
+
+```php
+$page->area('sidebar')->push('bar')
+```
+
+In your view you can iterate over the items of the area:
+
+```php
+<?php $page->area('sidebar')->each(function ($widget) {
+      echo $widget;
+  });
+?>
+```
 
 #### aliases
 

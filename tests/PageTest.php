@@ -28,6 +28,14 @@ class PageResponseTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(null, $this->_page->sections->get('bar2'));
     }
 
+    public function testArea()
+    {
+        $this->_page->area('foo')->push('bar1');
+        $this->assertEquals(['bar1'], $this->_page->area('foo')->toArray());
+        $this->_page->area('foo')->push('bar2');
+        $this->assertEquals(['bar1', 'bar2'], $this->_page->area('foo')->toArray());
+    }
+
     public function testMetaAndOptions()
     {
         $this->_page->options->set('title_pattern', '%s | bar');
