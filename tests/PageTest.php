@@ -2,7 +2,7 @@
 
 use Dtkahl\Page\Page;
 
-class PageResponseTest extends \PHPUnit_Framework_TestCase
+class PageTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -60,8 +60,10 @@ class PageResponseTest extends \PHPUnit_Framework_TestCase
     {
         $this->_page->addStylesheet(['foo2', 'bar2']);
         $this->_page->option('css_path', 'custom/css/path');
+        $this->_page->option('js_async', true);
+        $this->_page->option('css_async', true);
         $this->assertEquals(
-            "<link type=\"text/css\" rel=\"stylesheet\" href=\"custom/css/path/foo2.css\">\n<link type=\"text/css\" rel=\"stylesheet\" href=\"custom/css/path/bar2.css\">",
+            "<link type=\"text/css\" rel=\"stylesheet\" href=\"custom/css/path/foo2.css\" async>\n<link type=\"text/css\" rel=\"stylesheet\" href=\"custom/css/path/bar2.css\" async>",
             $this->_page->renderStylesheets()
         );
     }

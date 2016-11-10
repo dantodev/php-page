@@ -204,10 +204,15 @@ class Page
     public function renderJavascripts()
     {
         return $this->_scripts->copy()->map(function ($js) {
-            return (new HtmlTagBuilder('script', [
+            $attributes = [
                 'type' => "text/javascript",
-                'src' => $this->options->get('js_path', '/js') . "/$js.js"
-            ]))->render();
+                'src' => $this->options->get('js_path', '/js') . "/$js.js",
+            ];
+            if ($this->options->get('js_async', false)) {
+                $attributes[] = 'async';
+            }
+            var_dump($attributes);
+            return (new HtmlTagBuilder('script', $attributes))->render();
         })->join("\n");
     }
 
@@ -217,11 +222,16 @@ class Page
     public function renderStylesheets()
     {
         return $this->_styles->copy()->map(function ($css) {
-            return (new HtmlTagBuilder('link', [
+            $attributes = [
                 'type' => "text/css",
                 'rel' => "stylesheet",
-                'href' => $this->options->get('css_path', '/css') . "/$css.css"
-            ]))->render();
+                'href' => $this->options->get('css_path', '/css') . "/$css.css",
+            ];
+            if ($this->options->get('css_async', false)) {
+                $attributes[] = 'async';
+            }
+            var_dump($attributes);
+            return (new HtmlTagBuilder('link', $attributes))->render();
         })->join("\n");
     }
 
