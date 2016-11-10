@@ -211,7 +211,6 @@ class Page
             if ($this->options->get('js_async', false)) {
                 $attributes[] = 'async';
             }
-            var_dump($attributes);
             return (new HtmlTagBuilder('script', $attributes))->render();
         })->join("\n");
     }
@@ -230,7 +229,6 @@ class Page
             if ($this->options->get('css_async', false)) {
                 $attributes[] = 'async';
             }
-            var_dump($attributes);
             return (new HtmlTagBuilder('link', $attributes))->render();
         })->join("\n");
     }
