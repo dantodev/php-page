@@ -226,9 +226,6 @@ class Page
                 'rel' => "stylesheet",
                 'href' => $this->options->get('css_path', '/css') . "/$css.css",
             ];
-            if ($this->options->get('css_async', false)) {
-                $attributes[] = 'async';
-            }
             return (new HtmlTagBuilder('link', $attributes))->render();
         })->join("\n");
     }
