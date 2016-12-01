@@ -146,9 +146,8 @@ class Page
                     break;
 
                 case 'image':
-                    $html[] = (new HtmlTagBuilder('meta', ['name' => 'description', 'content' => $value]))->render();
-                    $html[] = (new HtmlTagBuilder('meta', ['name' => 'twitter:description', 'content' => $value]))->render();
-                    $html[] = (new HtmlTagBuilder('meta', ['property' => 'og:description', 'content' => $value]))->render();
+                    $html[] = (new HtmlTagBuilder('meta', ['name' => 'twitter:image', 'content' => $value]))->render();
+                    $html[] = (new HtmlTagBuilder('meta', ['property' => 'og:image', 'content' => $value]))->render();
                     break;
 
                 case 'url':
