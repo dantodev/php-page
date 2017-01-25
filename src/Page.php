@@ -110,8 +110,8 @@ class Page
                 case 'title':
                     $title = sprintf($this->options->get('title_pattern', '%s'), $value);
                     $html[] = (new HtmlTagBuilder('title', [], $title))->render();
-                    $html[] = (new HtmlTagBuilder('meta', ['name' => 'twitter:title', 'content' => $value]))->render();
-                    $html[] = (new HtmlTagBuilder('meta', ['property' => 'og:title', 'content' => $value]))->render();
+                    $html[] = (new HtmlTagBuilder('meta', ['name' => 'twitter:title', 'content' => htmlentities($value)]))->render();
+                    $html[] = (new HtmlTagBuilder('meta', ['property' => 'og:title', 'content' => htmlentities($value)]))->render();
                     break;
 
                 case 'charset':
@@ -140,9 +140,9 @@ class Page
                     break;
 
                 case 'description':
-                    $html[] = (new HtmlTagBuilder('meta', ['name' => 'description', 'content' => $value]))->render();
-                    $html[] = (new HtmlTagBuilder('meta', ['name' => 'twitter:description', 'content' => $value]))->render();
-                    $html[] = (new HtmlTagBuilder('meta', ['property' => 'og:description', 'content' => $value]))->render();
+                    $html[] = (new HtmlTagBuilder('meta', ['name' => 'description', 'content' => htmlentities($value)]))->render();
+                    $html[] = (new HtmlTagBuilder('meta', ['name' => 'twitter:description', 'content' => htmlentities($value)]))->render();
+                    $html[] = (new HtmlTagBuilder('meta', ['property' => 'og:description', 'content' => htmlentities($value)]))->render();
                     break;
 
                 case 'image':
